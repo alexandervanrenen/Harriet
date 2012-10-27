@@ -10,8 +10,9 @@
 #include <cassert>
 #include <cmath>
 //---------------------------------------------------------------------------
-//
-//
+// Harriet Script Language
+// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------

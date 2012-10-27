@@ -1,6 +1,10 @@
 #ifndef SCRIPTLANGUAGE_UTILITY_HPP_
 #define SCRIPTLANGUAGE_UTILITY_HPP_
 //---------------------------------------------------------------------------
+// Harriet Script Language
+// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// See the file LICENSE.txt for copying permission.
+//---------------------------------------------------------------------------
 namespace scriptlanguage {
 //---------------------------------------------------------------------------
 /// creates a unique_ptr *vote for adding this to std*

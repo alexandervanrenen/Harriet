@@ -1,8 +1,13 @@
+# Harriet Script Language
+# Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+# See the file LICENSE.txt for copying permission.
+######################################################################
+
 # ===============================================
 #   definitions
 # ===============================================
 
-all: tester
+all: sample
 
 objDir:= obj/
 srcDir:= src/
@@ -10,9 +15,8 @@ srcDir:= src/
 cf := -Werror -Wall -Wextra -Wuninitialized --std=c++0x -g0 -O3 -I./include
 lf := -g0 -O3 --std=c++0x
 
-ccache_use?=ccache
 comp?=  g++
-comp:= $(ccache_use) $(comp)
+comp:= $(comp)
 
 build_dir=@mkdir -p $(dir $@)
 
@@ -29,11 +33,11 @@ src_files :=	Environment.o		\
 obj_files := $(addprefix $(objDir),$(src_files))
 
 # ===============================================
-#   build tester
+#   build sample
 # ===============================================
 
-tester: $(obj_files) tester.cpp
-	$(comp) -o $@ tester.cpp $(obj_files) $(lf)
+sample: $(obj_files) sample.cpp
+	$(comp) -o $@ sample.cpp $(obj_files) $(lf)
 
 
 # ===============================================

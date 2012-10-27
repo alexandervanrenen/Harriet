@@ -2,9 +2,13 @@
 #include "src/Expression.hpp"
 #include "src/Environment.hpp"
 #include <iostream>
-
+//---------------------------------------------------------------------------
+// Harriet Script Language
+// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// See the file license.txt for copying permission.
+//---------------------------------------------------------------------------
 using namespace std;
-
+//---------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
    // check arguments
@@ -24,3 +28,4 @@ int main(int argc, char** argv)
    cout << endl;
    return 0;
 }
+//---------------------------------------------------------------------------

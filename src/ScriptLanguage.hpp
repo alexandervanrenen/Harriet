@@ -7,8 +7,9 @@
 #include <memory>
 #include <ios>
 //---------------------------------------------------------------------------
-//
-//
+// Harriet Script Language
+// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
 namespace scriptlanguage {
 //---------------------------------------------------------------------------

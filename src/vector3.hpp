@@ -8,8 +8,9 @@
 #include <stdint.h>
 #include <string>
 //---------------------------------------------------------------------------
-// Utilities - 3d vector
-// Alexander van Renen 2010, 2011
+// Harriet Script Language
+// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
 namespace scriptlanguage {
 //---------------------------------------------------------------------------
