@@ -12,23 +12,6 @@
 //---------------------------------------------------------------------------
 namespace scriptlanguage {
 //---------------------------------------------------------------------------
-/// policy class  => use this policy for non thread safe allocators
-struct NoLockPolicy {
-   struct Lock {
-      Lock() {};
-      ~Lock() {};
-   };
-protected:
-   ~NoLockPolicy() {}
-};
-//---------------------------------------------------------------------------
-/// policy class  => use this policy for thread safe allocators
-struct SimpleLockPolicy {
-   SimpleLockPolicy() {} // AAA implement
-protected:
-   ~SimpleLockPolicy() {}
-};
-//---------------------------------------------------------------------------
 /// policy class => if the allocator is used for a derived class std::new is used
 struct UseNewOnInheritencePolicy {
    static void* allocate(std::size_t size) {return ::operator new(size);}
