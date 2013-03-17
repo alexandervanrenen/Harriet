@@ -1,7 +1,6 @@
 #ifndef SCRIPTLANGUAGE_ENVIRONMENT_HPP_
 #define SCRIPTLANGUAGE_ENVIRONMENT_HPP_
 //---------------------------------------------------------------------------
-#include "ScriptLanguage.hpp"
 #include <memory>
 #include <string>
 #include <vector>

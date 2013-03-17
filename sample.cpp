@@ -1,10 +1,10 @@
-#include "src/ExpressionParser.hpp"
-#include "src/Expression.hpp"
-#include "src/Environment.hpp"
+#include "ScriptLanguage.hpp"
+#include "Environment.hpp"
+#include "ExpressionParser.hpp"
 #include <iostream>
 //---------------------------------------------------------------------------
 // Harriet Script Language
-// Copyright (c) 2012 Alexander van Renen (alexandervanrenen@gmail.com)
+// Copyright (c) 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file license.txt for copying permission.
 //---------------------------------------------------------------------------
 using namespace std;

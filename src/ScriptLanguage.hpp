@@ -15,7 +15,6 @@ namespace scriptlanguage {
 //---------------------------------------------------------------------------
 class Value;
 class Expression;
-class Environment;
 //---------------------------------------------------------------------------
 /// other key words
 const std::string kTriggerName = "trigger";

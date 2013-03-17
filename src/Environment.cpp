@@ -1,3 +1,4 @@
+#include "ScriptLanguage.hpp"
 #include "Environment.hpp"
 #include "Expression.hpp"
 #include "Function.hpp"

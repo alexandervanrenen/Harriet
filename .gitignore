@@ -1,0 +1,5 @@
+tester
+sample
+obj/*
+libs/*
+config.local
