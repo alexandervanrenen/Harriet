@@ -3,15 +3,15 @@
 # See the file LICENSE.txt for copying permission.
 ######################################################################
 
-all: sample tester
+all: calculator tester
 
 objDir:= obj/
 srcDir:= src/
 
--include config.locals
+-include config.local
 
 CXX ?= g++
-cf := -Werror -Wall -Wextra -Wuninitialized --std=c++0x -g0 -O3 -I./src -I./libs/gtest/include
+cf := -Werror -Wall -Wextra -Wuninitialized --std=c++0x -g0 -O3 -fPIC -I./src -I./libs/gtest/include
 lf := -g0 -O3 --std=c++0x -I./src -I./libs/gtest/include
 
 build_dir = @mkdir -p $(dir $@)
@@ -23,11 +23,11 @@ src_files :=	Environment.o		\
 				ScriptLanguage.o
 obj_files := $(addprefix $(objDir),$(src_files))
 
-sample: $(obj_files) sample.cpp
-	$(CXX) -o $@ sample.cpp $(obj_files) $(lf)
+calculator: $(obj_files) samples/calculator.cpp
+	$(CXX) -o $@ samples/calculator.cpp $(obj_files) $(lf)
 
-tester: $(obj_files) libs/gtest tests/main.cpp
-	$(CXX) -o $@ tests/main.cpp $(lf) $(obj_files) libs/gtest/libgtest.a -pthread
+tester: libs/gtest $(obj_files) tests/tester.cpp
+	$(CXX) -o $@ tests/tester.cpp $(lf) $(obj_files) libs/gtest/libgtest.a -pthread
 
 $(objDir)%o: $(srcDir)%cpp $(srcDir)%hpp
 	$(build_dir)
@@ -51,4 +51,6 @@ libs/gtest:
 	rm -rf libs/gtest-1.6.0
 
 clean:
-	rm $(objDir) -rf && find . -maxdepth 1 -name 'hyper_simple_client' -delete && rm tester
+	rm $(objDir) -rf
+	find . -name "tester" -type f -delete
+	find . -name "calculator" -type f -delete
