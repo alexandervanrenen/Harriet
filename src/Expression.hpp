@@ -14,7 +14,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 class Environment;
 class Value;
@@ -62,7 +62,7 @@ protected:
 //---------------------------------------------------------------------------
 class Value : public Expression {
 public:
-   virtual scriptlanguage::VariableType getResultType() const = 0;
+   virtual harriet::VariableType getResultType() const = 0;
 
    virtual std::unique_ptr<Value> computeAdd(const Value& rhs, const Environment& /*env*/) const {doError("+" , *this, rhs); throw;}
    virtual std::unique_ptr<Value> computeSub(const Value& rhs, const Environment& /*env*/) const {doError("-" , *this, rhs); throw;}
@@ -82,7 +82,7 @@ public:
    virtual std::unique_ptr<Value> computeInv(const Environment& /*env*/) const {doError("-", *this); throw;}
    virtual std::unique_ptr<Value> computeNot(const Environment& /*env*/) const {doError("!", *this); throw;}
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const {throw scriptlanguage::Exception{"unable to cast '" + scriptlanguage::typeToName(getResultType()) + "' to '" +  scriptlanguage::typeToName(resultType) + "'"};} // TODO: remove environment parameter
+   virtual std::unique_ptr<Value> computeCast(const Environment& /*env*/, harriet::VariableType resultType) const {throw harriet::Exception{"unable to cast '" + harriet::typeToName(getResultType()) + "' to '" +  harriet::typeToName(resultType) + "'"};} // TODO: remove environment parameter
 
    friend std::ostream& operator<< (std::ostream& os, const Value& value) {value.print(os); return os;}
 
@@ -91,8 +91,8 @@ protected:
    virtual ExpressionType getExpressionType() const {return ExpressionType::TValue;}
    virtual Associativity getAssociativity() const {throw;}
 
-   static void doError(const std::string& operatorSign, const Value& lhs, const Value& rhs) throw(scriptlanguage::Exception) { throw scriptlanguage::Exception{"binary operator '" + operatorSign + "' does not accept '" + scriptlanguage::typeToName(lhs.getResultType()) + "' and '" + scriptlanguage::typeToName(rhs.getResultType()) + "'"}; }
-   static void doError(const std::string& operatorSign, const Value& lhs) throw(scriptlanguage::Exception) { throw scriptlanguage::Exception{"unary operator '" + operatorSign + "' does not accept '" + scriptlanguage::typeToName(lhs.getResultType()) + "'"}; }
+   static void doError(const std::string& operatorSign, const Value& lhs, const Value& rhs) throw(harriet::Exception) { throw harriet::Exception{"binary operator '" + operatorSign + "' does not accept '" + harriet::typeToName(lhs.getResultType()) + "' and '" + harriet::typeToName(rhs.getResultType()) + "'"}; }
+   static void doError(const std::string& operatorSign, const Value& lhs) throw(harriet::Exception) { throw harriet::Exception{"unary operator '" + operatorSign + "' does not accept '" + harriet::typeToName(lhs.getResultType()) + "'"}; }
 };
 //---------------------------------------------------------------------------
 struct IntegerValue : public Value, GenericAllocator<IntegerValue> {
@@ -103,7 +103,7 @@ struct IntegerValue : public Value, GenericAllocator<IntegerValue> {
    int32_t result;
    IntegerValue(int32_t result) : result(result) {}
    virtual ~IntegerValue(){};
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TInteger;}
+   virtual harriet::VariableType getResultType() const {return harriet::VariableType::TInteger;}
 
    virtual std::unique_ptr<Value> computeAdd(const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeSub(const Value& rhs, const Environment& env) const;
@@ -122,7 +122,7 @@ struct IntegerValue : public Value, GenericAllocator<IntegerValue> {
 
    virtual std::unique_ptr<Value> computeInv(const Environment& env) const;
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
+   virtual std::unique_ptr<Value> computeCast(const Environment& env, harriet::VariableType resultType) const;
 };
 //---------------------------------------------------------------------------
 struct FloatValue : public Value, GenericAllocator<FloatValue> {
@@ -133,7 +133,7 @@ struct FloatValue : public Value, GenericAllocator<FloatValue> {
    float result;
    FloatValue(float result) : result(result) {}
    virtual ~FloatValue(){};
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TFloat;}
+   virtual harriet::VariableType getResultType() const {return harriet::VariableType::TFloat;}
 
    virtual std::unique_ptr<Value> computeAdd(const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeSub(const Value& rhs, const Environment& env) const;
@@ -150,7 +150,7 @@ struct FloatValue : public Value, GenericAllocator<FloatValue> {
 
    virtual std::unique_ptr<Value> computeInv(const Environment& env) const;
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
+   virtual std::unique_ptr<Value> computeCast(const Environment& env, harriet::VariableType resultType) const;
 };
 //---------------------------------------------------------------------------
 struct BoolValue : public Value, GenericAllocator<BoolValue> {
@@ -161,7 +161,7 @@ struct BoolValue : public Value, GenericAllocator<BoolValue> {
    bool result;
    BoolValue(bool result) : result(result) {}
    virtual ~BoolValue(){};
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TBool;}
+   virtual harriet::VariableType getResultType() const {return harriet::VariableType::TBool;}
 
    virtual std::unique_ptr<Value> computeAnd(const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeOr (const Value& rhs, const Environment& env) const;
@@ -170,7 +170,7 @@ struct BoolValue : public Value, GenericAllocator<BoolValue> {
 
    virtual std::unique_ptr<Value> computeNot(const Environment& env) const;
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
+   virtual std::unique_ptr<Value> computeCast(const Environment& env, harriet::VariableType resultType) const;
 };
 //---------------------------------------------------------------------------
 struct StringValue : public Value, GenericAllocator<StringValue> {
@@ -181,7 +181,7 @@ struct StringValue : public Value, GenericAllocator<StringValue> {
    std::string result;
    StringValue(const std::string& result) : result(result) {}
    virtual ~StringValue(){};
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TString;}
+   virtual harriet::VariableType getResultType() const {return harriet::VariableType::TString;}
 
    virtual std::unique_ptr<Value> computeAdd(const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeGt (const Value& rhs, const Environment& env) const;
@@ -191,7 +191,7 @@ struct StringValue : public Value, GenericAllocator<StringValue> {
    virtual std::unique_ptr<Value> computeEq (const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeNeq(const Value& rhs, const Environment& env) const;
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
+   virtual std::unique_ptr<Value> computeCast(const Environment& env, harriet::VariableType resultType) const;
 };
 //---------------------------------------------------------------------------
 struct VectorValue : public Value, GenericAllocator<VectorValue> {
@@ -202,7 +202,7 @@ struct VectorValue : public Value, GenericAllocator<VectorValue> {
    Vector3<float> result;
    VectorValue(const Vector3<float>& result) : result(result) {}
    virtual ~VectorValue(){};
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TVector;}
+   virtual harriet::VariableType getResultType() const {return harriet::VariableType::TVector;}
 
    virtual std::unique_ptr<Value> computeAdd(const Value& rhs, const Environment& env) const;
    virtual std::unique_ptr<Value> computeSub(const Value& rhs, const Environment& env) const;
@@ -213,7 +213,7 @@ struct VectorValue : public Value, GenericAllocator<VectorValue> {
 
    virtual std::unique_ptr<Value> computeInv(const Environment& env) const;
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
+   virtual std::unique_ptr<Value> computeCast(const Environment& env, harriet::VariableType resultType) const;
 };
 //---------------------------------------------------------------------------
 class UnaryOperator : public Expression {
@@ -247,33 +247,33 @@ protected:
 class CastOperator : public UnaryOperator {
    virtual std::unique_ptr<Value> evaluate(Environment& environment) const; // uses getCastType to determin the result type
 protected:
-   virtual scriptlanguage::VariableType getCastType() const = 0;
+   virtual harriet::VariableType getCastType() const = 0;
    virtual Associativity getAssociativity() const {return Associativity::TRight;}
    virtual uint8_t priority() const {return 3;}
 };
 //---------------------------------------------------------------------------
 class IntegerCast : public CastOperator {
-   virtual scriptlanguage::VariableType getCastType() const {return scriptlanguage::VariableType::TInteger;}
+   virtual harriet::VariableType getCastType() const {return harriet::VariableType::TInteger;}
    virtual const std::string getSign() const {return "cast<int>";}
 };
 //---------------------------------------------------------------------------
 class FloatCast : public CastOperator {
-   virtual scriptlanguage::VariableType getCastType() const {return scriptlanguage::VariableType::TFloat;}
+   virtual harriet::VariableType getCastType() const {return harriet::VariableType::TFloat;}
    virtual const std::string getSign() const {return "cast<float>";}
 };
 //---------------------------------------------------------------------------
 class BoolCast : public CastOperator {
-   virtual scriptlanguage::VariableType getCastType() const {return scriptlanguage::VariableType::TBool;}
+   virtual harriet::VariableType getCastType() const {return harriet::VariableType::TBool;}
    virtual const std::string getSign() const {return "cast<bool>";}
 };
 //---------------------------------------------------------------------------
 class StringCast : public CastOperator {
-   virtual scriptlanguage::VariableType getCastType() const {return scriptlanguage::VariableType::TString;}
+   virtual harriet::VariableType getCastType() const {return harriet::VariableType::TString;}
    virtual const std::string getSign() const {return "cast<string>";}
 };
 //---------------------------------------------------------------------------
 class VectorCast : public CastOperator {
-   virtual scriptlanguage::VariableType getCastType() const {return scriptlanguage::VariableType::TString;}
+   virtual harriet::VariableType getCastType() const {return harriet::VariableType::TString;}
    virtual const std::string getSign() const {return "cast<vector>";}
 };
 //---------------------------------------------------------------------------
@@ -469,6 +469,6 @@ protected:
    friend class ExpressionParser;
 };
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------
 #endif

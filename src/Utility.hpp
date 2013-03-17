@@ -5,7 +5,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 /// creates a unique_ptr *vote for adding this to std*
 template<class T, class... Arg>
@@ -24,6 +24,6 @@ Number to_number(const std::string& str)
    return num;
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------
 #endif

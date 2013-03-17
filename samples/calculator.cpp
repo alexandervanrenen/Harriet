@@ -16,8 +16,8 @@ int main(int argc, char** argv)
    }
 
    // parse input and evaluate the expression
-   auto result = scriptlanguage::evaluate(argv[1]);
-   scriptlanguage::Value& val = *result;
+   auto result = harriet::evaluate(argv[1]);
+   harriet::Value& val = *result;
 
    // print result and quit
    cout << "result: " << val << endl;

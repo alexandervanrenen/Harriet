@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 unique_ptr<Expression> parse(const string& input)
 {
@@ -38,14 +38,14 @@ int32_t evaluateAsInteger(const string& input)
 {
     Environment environment;
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto integerResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TInteger); // TODO: why not use a castToIntegerMethode ?
+    auto integerResultValue = resultValue->computeCast(environment, harriet::VariableType::TInteger); // TODO: why not use a castToIntegerMethode ?
     return reinterpret_cast<IntegerValue*>(integerResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
 int32_t evaluateAsInteger(const string& input, Environment& environment)
 {
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto integerResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TInteger);
+    auto integerResultValue = resultValue->computeCast(environment, harriet::VariableType::TInteger);
     return reinterpret_cast<IntegerValue*>(integerResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
@@ -53,14 +53,14 @@ float evaluateAsFloat(const string& input)
 {
     Environment environment;
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto floatResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TFloat);
+    auto floatResultValue = resultValue->computeCast(environment, harriet::VariableType::TFloat);
     return reinterpret_cast<FloatValue*>(floatResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
 float evaluateAsFloat(const string& input, Environment& environment)
 {
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto floatResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TFloat);
+    auto floatResultValue = resultValue->computeCast(environment, harriet::VariableType::TFloat);
     return reinterpret_cast<FloatValue*>(floatResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
@@ -68,14 +68,14 @@ const string evaluateAsString(const string& input)
 {
     Environment environment;
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto stringResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TString);
+    auto stringResultValue = resultValue->computeCast(environment, harriet::VariableType::TString);
     return reinterpret_cast<StringValue*>(stringResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
 const string evaluateAsString(const string& input, Environment& environment)
 {
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto stringResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TString);
+    auto stringResultValue = resultValue->computeCast(environment, harriet::VariableType::TString);
     return reinterpret_cast<StringValue*>(stringResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
@@ -83,16 +83,16 @@ const Vector3<float> evaluateAsVector(const string& input)
 {
     Environment environment;
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto vectorResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TVector);
+    auto vectorResultValue = resultValue->computeCast(environment, harriet::VariableType::TVector);
     return reinterpret_cast<VectorValue*>(vectorResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
 const Vector3<float> evaluateAsVector(const string& input, Environment& environment)
 {
     auto resultValue = ExpressionParser::parse(input, environment)->evaluate(environment);
-    auto vectorResultValue = resultValue->computeCast(environment, scriptlanguage::VariableType::TVector);
+    auto vectorResultValue = resultValue->computeCast(environment, harriet::VariableType::TVector);
     return reinterpret_cast<VectorValue*>(vectorResultValue.get())->result;
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

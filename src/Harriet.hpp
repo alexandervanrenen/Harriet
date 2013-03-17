@@ -6,7 +6,7 @@
 // Copyright (c) 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file license.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 /// Creates an expression from the given string in the given environment. 
 std::unique_ptr<Expression> parse(const std::string& input);
@@ -32,5 +32,5 @@ const std::string evaluateAsString(const std::string& input, Environment& enviro
 const Vector3<float> evaluateAsVector(const std::string& input);
 const Vector3<float> evaluateAsVector(const std::string& input, Environment& environment);
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

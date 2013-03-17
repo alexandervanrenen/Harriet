@@ -11,7 +11,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 class Value;
 class Expression;
@@ -63,8 +63,8 @@ const std::string readOnlyAlpha(std::istream& is) throw();
 const std::string readParenthesisExpression(char openginType, char closingType, std::istream& is) throw(Exception); // reads stream until .. closingType (counts opening)
 
 bool isImplicitCastPossible(VariableType from, VariableType to) throw();
-std::unique_ptr<Expression> createCast(std::unique_ptr<Expression> expression, scriptlanguage::VariableType resultType);
+std::unique_ptr<Expression> createCast(std::unique_ptr<Expression> expression, harriet::VariableType resultType);
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------
 #endif

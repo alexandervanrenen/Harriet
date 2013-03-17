@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 Environment::Environment(Environment* parentEnvironment)
 : parent(parentEnvironment)
@@ -123,5 +123,5 @@ const Function* Environment::getFunction(uint32_t id)
    throw;
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

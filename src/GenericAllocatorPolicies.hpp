@@ -10,7 +10,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 /// policy class => if the allocator is used for a derived class std::new is used
 struct UseNewOnInheritencePolicy {

@@ -15,7 +15,7 @@
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 bool isKeyword(const string& str)
 {
@@ -145,20 +145,20 @@ bool isImplicitCastPossible(VariableType from, VariableType to) throw()
    return implicitCast[static_cast<uint32_t>(to)][static_cast<uint32_t>(from)];
 }
 //---------------------------------------------------------------------------
-unique_ptr<Expression> createCast(unique_ptr<Expression> expression, scriptlanguage::VariableType resultType)
+unique_ptr<Expression> createCast(unique_ptr<Expression> expression, harriet::VariableType resultType)
 {
    unique_ptr<CastOperator> result;
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: result = make_unique<IntegerCast>(); break;
-      case scriptlanguage::VariableType::TFloat:   result = make_unique<FloatCast>();   break;
-      case scriptlanguage::VariableType::TBool:    result = make_unique<BoolCast>();    break;
-      case scriptlanguage::VariableType::TString:  result = make_unique<StringCast>();  break;
-      case scriptlanguage::VariableType::TVector:  result = make_unique<VectorCast>();  break;
+      case harriet::VariableType::TInteger: result = make_unique<IntegerCast>(); break;
+      case harriet::VariableType::TFloat:   result = make_unique<FloatCast>();   break;
+      case harriet::VariableType::TBool:    result = make_unique<BoolCast>();    break;
+      case harriet::VariableType::TString:  result = make_unique<StringCast>();  break;
+      case harriet::VariableType::TVector:  result = make_unique<VectorCast>();  break;
       default:                                     throw Exception{"unable to cast to: " + typeToName(resultType)};
    }
    result->addChild(::move(expression));
    return ::move(result);
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

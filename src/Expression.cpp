@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 void Variable::print(ostream& stream) const
 {
@@ -27,11 +27,11 @@ unique_ptr<Value> Variable::evaluate(Environment& environment) const
 {
    const Value& result = environment.read(identifier);
    switch(result.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(reinterpret_cast<const IntegerValue&>(result).result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(reinterpret_cast<const FloatValue&>(result).result);
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(reinterpret_cast<const BoolValue&>(result).result);
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(reinterpret_cast<const StringValue&>(result).result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(reinterpret_cast<const VectorValue&>(result).result);
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(reinterpret_cast<const IntegerValue&>(result).result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(reinterpret_cast<const FloatValue&>(result).result);
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(reinterpret_cast<const BoolValue&>(result).result);
+      case harriet::VariableType::TString:  return make_unique<StringValue>(reinterpret_cast<const StringValue&>(result).result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(reinterpret_cast<const VectorValue&>(result).result);
       default:                                     throw;
    }
 }
@@ -49,127 +49,127 @@ unique_ptr<Value> IntegerValue::evaluate(Environment& /*environment*/) const
 unique_ptr<Value> IntegerValue::computeAdd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result + reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result + reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).add(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '+'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result + reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result + reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).add(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '+'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeSub(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result - reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result - reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).sub(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '-'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result - reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result - reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).sub(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '-'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeMul(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result * reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result * reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).mul(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '*'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result * reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result * reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).mul(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '*'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeDiv(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result / reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result / reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).div(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '/'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result / reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result / reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).div(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '/'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeMod(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: if(reinterpret_cast<const IntegerValue*>(&rhs)->result==0) return make_unique<IntegerValue>(0); else return make_unique<IntegerValue>(this->result % reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '%'"};
+      case harriet::VariableType::TInteger: if(reinterpret_cast<const IntegerValue*>(&rhs)->result==0) return make_unique<IntegerValue>(0); else return make_unique<IntegerValue>(this->result % reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '%'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeExp(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(static_cast<int32_t>(pow(this->result, reinterpret_cast<const IntegerValue*>(&rhs)->result)));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const FloatValue*>(&rhs)->result)));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '^'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(static_cast<int32_t>(pow(this->result, reinterpret_cast<const IntegerValue*>(&rhs)->result)));
+      case harriet::VariableType::TFloat:   return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const FloatValue*>(&rhs)->result)));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '^'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeAnd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result & reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '&'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result & reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '&'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeOr (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result | reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '|'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result | reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '|'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeGt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result > reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result > reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '>'"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result > reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result > reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '>'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeLt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result < reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result < reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '<'"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result < reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result < reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '<'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeGeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result >= reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '>='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result >= reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '>='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeLeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result <= reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '<='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result <= reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '<='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeEq (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result == reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result == reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '=='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result == reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result == reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '=='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::computeNeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result != reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result != reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '!='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result != reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result != reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '!='"};
    }
 }
 //---------------------------------------------------------------------------
@@ -178,15 +178,15 @@ unique_ptr<Value> IntegerValue::computeInv(const Environment& /*env*/) const
                                                    return make_unique<IntegerValue>(-this->result);
 }
 //---------------------------------------------------------------------------
-unique_ptr<Value> IntegerValue::computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const
+unique_ptr<Value> IntegerValue::computeCast(const Environment& /*env*/, harriet::VariableType resultType) const
 {
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
+      case harriet::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
+      default:                                     throw harriet::Exception{"invalid cast target: '" + harriet::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -203,111 +203,111 @@ unique_ptr<Value> FloatValue::evaluate(Environment& /*environment*/) const
 unique_ptr<Value> FloatValue::computeAdd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<FloatValue>(this->result + reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result + reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).add(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '+'"};
+      case harriet::VariableType::TInteger: return make_unique<FloatValue>(this->result + reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result + reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).add(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '+'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeSub(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<FloatValue>(this->result - reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result - reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).sub(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '-'"};
+      case harriet::VariableType::TInteger: return make_unique<FloatValue>(this->result - reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result - reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).sub(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '-'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeMul(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<FloatValue>(this->result * reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result * reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).mul(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '*'"};
+      case harriet::VariableType::TInteger: return make_unique<FloatValue>(this->result * reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result * reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).mul(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '*'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeDiv(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<FloatValue>(this->result / reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result / reinterpret_cast<const FloatValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).div(this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '/'"};
+      case harriet::VariableType::TInteger: return make_unique<FloatValue>(this->result / reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result / reinterpret_cast<const FloatValue*>(&rhs)->result);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(reinterpret_cast<const FloatValue*>(&rhs)->result).div(this->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '/'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeMod(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<FloatValue>(static_cast<int32_t>(this->result) % reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '%'"};
+      case harriet::VariableType::TInteger: return make_unique<FloatValue>(static_cast<int32_t>(this->result) % reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '%'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeExp(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const IntegerValue*>(&rhs)->result)));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const FloatValue*>(&rhs)->result)));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '^'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const IntegerValue*>(&rhs)->result)));
+      case harriet::VariableType::TFloat:   return make_unique<IntegerValue>(static_cast<float>(pow(this->result, reinterpret_cast<const FloatValue*>(&rhs)->result)));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '^'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeGt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result > reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result > reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '>'"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result > reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result > reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '>'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeLt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result < reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result < reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '<'"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result < reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result < reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '<'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeGeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result >= reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '>='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result >= reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '>='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeLeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result <= reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '<='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result >= reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result <= reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '<='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeEq (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result == reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result == reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '=='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result == reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result == reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '=='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::computeNeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<BoolValue>(this->result != reinterpret_cast<const IntegerValue*>(&rhs)->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<BoolValue>(this->result != reinterpret_cast<const FloatValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '!='"};
+      case harriet::VariableType::TInteger: return make_unique<BoolValue>(this->result != reinterpret_cast<const IntegerValue*>(&rhs)->result);
+      case harriet::VariableType::TFloat:   return make_unique<BoolValue>(this->result != reinterpret_cast<const FloatValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '!='"};
    }
 }
 //---------------------------------------------------------------------------
@@ -316,21 +316,21 @@ unique_ptr<Value> FloatValue::computeInv(const Environment& /*env*/) const
                                                    return make_unique<FloatValue>(-this->result);
 }
 //---------------------------------------------------------------------------
-unique_ptr<Value> FloatValue::computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const
+unique_ptr<Value> FloatValue::computeCast(const Environment& /*env*/, harriet::VariableType resultType) const
 {
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default: throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
+      case harriet::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
+      default: throw harriet::Exception{"invalid cast target: '" + harriet::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
 void BoolValue::print(ostream& stream) const
 {
-   stream << (result?scriptlanguage::kTrue:scriptlanguage::kFalse) << " ";
+   stream << (result?harriet::kTrue:harriet::kFalse) << " ";
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> BoolValue::evaluate(Environment& /*environment*/) const
@@ -341,32 +341,32 @@ unique_ptr<Value> BoolValue::evaluate(Environment& /*environment*/) const
 unique_ptr<Value> BoolValue::computeAnd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result & reinterpret_cast<const BoolValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '&'"};
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result & reinterpret_cast<const BoolValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '&'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> BoolValue::computeOr (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result | reinterpret_cast<const BoolValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '|'"};
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result | reinterpret_cast<const BoolValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '|'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> BoolValue::computeEq (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result == reinterpret_cast<const BoolValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '=='"};
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result == reinterpret_cast<const BoolValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '=='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> BoolValue::computeNeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result != reinterpret_cast<const BoolValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '!='"};
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result != reinterpret_cast<const BoolValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '!='"};
    }
 }
 //---------------------------------------------------------------------------
@@ -375,15 +375,15 @@ unique_ptr<Value> BoolValue::computeNot(const Environment& /*env*/) const
                                                    return make_unique<BoolValue>(!this->result);
 }
 //---------------------------------------------------------------------------
-unique_ptr<Value> BoolValue::computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const
+unique_ptr<Value> BoolValue::computeCast(const Environment& /*env*/, harriet::VariableType resultType) const
 {
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result);
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result?scriptlanguage::kTrue:scriptlanguage::kFalse);
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result);
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result);
+      case harriet::VariableType::TString:  return make_unique<StringValue>(this->result?harriet::kTrue:harriet::kFalse);
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
+      default:                                     throw harriet::Exception{"invalid cast target: '" + harriet::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -400,68 +400,68 @@ unique_ptr<Value> StringValue::evaluate(Environment& /*environment*/) const
 unique_ptr<Value> StringValue::computeAdd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<StringValue>(this->result + reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '+'"};
+      case harriet::VariableType::TString:    return make_unique<StringValue>(this->result + reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '+'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeGt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result > reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '>'"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result > reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '>'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeLt (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result < reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '<'"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result < reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '<'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeGeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result >= reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '>='"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result >= reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '>='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeLeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result <= reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '<='"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result <= reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '<='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeEq (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result == reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '=='"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result == reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '=='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> StringValue::computeNeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TString:    return make_unique<BoolValue>(this->result != reinterpret_cast<const StringValue*>(&rhs)->result);
-      default:                                       throw scriptlanguage::Exception{"invalid input for binary operator '!='"};
+      case harriet::VariableType::TString:    return make_unique<BoolValue>(this->result != reinterpret_cast<const StringValue*>(&rhs)->result);
+      default:                                       throw harriet::Exception{"invalid input for binary operator '!='"};
    }
 }
 //---------------------------------------------------------------------------
-unique_ptr<Value> StringValue::computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const
+unique_ptr<Value> StringValue::computeCast(const Environment& /*env*/, harriet::VariableType resultType) const
 {
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(to_number<int32_t>(this->result));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(to_number<float>(this->result));
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result==scriptlanguage::kTrue || this->result=="0");
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result);
-      case scriptlanguage::VariableType::TVector:  {auto v=make_unique<VectorValue>(Vector3<float>(0)); istringstream is(this->result); is >> v->result; return ::move(v);}
-      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(to_number<int32_t>(this->result));
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(to_number<float>(this->result));
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result==harriet::kTrue || this->result=="0");
+      case harriet::VariableType::TString:  return make_unique<StringValue>(this->result);
+      case harriet::VariableType::TVector:  {auto v=make_unique<VectorValue>(Vector3<float>(0)); istringstream is(this->result); is >> v->result; return ::move(v);}
+      default:                                     throw harriet::Exception{"invalid cast target: '" + harriet::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -478,54 +478,54 @@ unique_ptr<Value> VectorValue::evaluate(Environment& /*environment*/) const
 unique_ptr<Value> VectorValue::computeAdd(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).add(reinterpret_cast<const IntegerValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).add(reinterpret_cast<const FloatValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(this->result + reinterpret_cast<const VectorValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '+'"};
+      case harriet::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).add(reinterpret_cast<const IntegerValue*>(&rhs)->result));
+      case harriet::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).add(reinterpret_cast<const FloatValue*>(&rhs)->result));
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(this->result + reinterpret_cast<const VectorValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '+'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> VectorValue::computeSub(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).sub(reinterpret_cast<const IntegerValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).sub(reinterpret_cast<const FloatValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(this->result - reinterpret_cast<const VectorValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '-'"};
+      case harriet::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).sub(reinterpret_cast<const IntegerValue*>(&rhs)->result));
+      case harriet::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).sub(reinterpret_cast<const FloatValue*>(&rhs)->result));
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(this->result - reinterpret_cast<const VectorValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '-'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> VectorValue::computeMul(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).mul(reinterpret_cast<const IntegerValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).mul(reinterpret_cast<const FloatValue*>(&rhs)->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '*'"};
+      case harriet::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).mul(reinterpret_cast<const IntegerValue*>(&rhs)->result));
+      case harriet::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).mul(reinterpret_cast<const FloatValue*>(&rhs)->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '*'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> VectorValue::computeDiv(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).div(reinterpret_cast<const IntegerValue*>(&rhs)->result));
-      case scriptlanguage::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).div(reinterpret_cast<const FloatValue*>(&rhs)->result));
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '/'"};
+      case harriet::VariableType::TInteger: return make_unique<VectorValue>(Vector3<float>(this->result).div(reinterpret_cast<const IntegerValue*>(&rhs)->result));
+      case harriet::VariableType::TFloat:   return make_unique<VectorValue>(Vector3<float>(this->result).div(reinterpret_cast<const FloatValue*>(&rhs)->result));
+      default:                                     throw harriet::Exception{"invalid input for binary operator '/'"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> VectorValue::computeEq (const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TVector:  return make_unique<BoolValue>(this->result == reinterpret_cast<const VectorValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '=='"};
+      case harriet::VariableType::TVector:  return make_unique<BoolValue>(this->result == reinterpret_cast<const VectorValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '=='"};
    }
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> VectorValue::computeNeq(const Value& rhs, const Environment& /*env*/) const
 {
    switch(rhs.getResultType()) {
-      case scriptlanguage::VariableType::TVector:  return make_unique<BoolValue>(this->result != reinterpret_cast<const VectorValue*>(&rhs)->result);
-      default:                                     throw scriptlanguage::Exception{"invalid input for binary operator '!='"};
+      case harriet::VariableType::TVector:  return make_unique<BoolValue>(this->result != reinterpret_cast<const VectorValue*>(&rhs)->result);
+      default:                                     throw harriet::Exception{"invalid input for binary operator '!='"};
    }
 }
 //---------------------------------------------------------------------------
@@ -534,15 +534,15 @@ unique_ptr<Value> VectorValue::computeInv(const Environment& /*env*/) const
                                                    return make_unique<VectorValue>(Vector3<float>(this->result).inverse());
 }
 //---------------------------------------------------------------------------
-unique_ptr<Value> VectorValue::computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const
+unique_ptr<Value> VectorValue::computeCast(const Environment& /*env*/, harriet::VariableType resultType) const
 {
    switch(resultType) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerValue>(this->result.x);
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatValue>(this->result.x);
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result.x!=0);
-      case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result.toString());
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(this->result);
-      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
+      case harriet::VariableType::TInteger: return make_unique<IntegerValue>(this->result.x);
+      case harriet::VariableType::TFloat:   return make_unique<FloatValue>(this->result.x);
+      case harriet::VariableType::TBool:    return make_unique<BoolValue>(this->result.x!=0);
+      case harriet::VariableType::TString:  return make_unique<StringValue>(this->result.toString());
+      case harriet::VariableType::TVector:  return make_unique<VectorValue>(this->result);
+      default:                                     throw harriet::Exception{"invalid cast target: '" + harriet::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -592,7 +592,7 @@ void BinaryOperator::print(ostream& stream) const
 unique_ptr<Value> AssignmentOperator::evaluate(Environment& environment) const
 {
    if(lhs->getExpressionType() != ExpressionType::TVariable)
-      throw scriptlanguage::Exception("need variable as left hand side of assignment operator");
+      throw harriet::Exception("need variable as left hand side of assignment operator");
 
    environment.update(reinterpret_cast<Variable*>(lhs.get())->getIdentifier(), rhs->evaluate(environment));
    return lhs->evaluate(environment);
@@ -683,7 +683,7 @@ unique_ptr<Value> FunctionOperator::evaluate(Environment& environment) const
    for(uint32_t i=0; i<arguments.size(); i++) {
       auto result = arguments[i]->evaluate(environment);
       if(result->getResultType() != function->getArgumentType(i))
-         throw scriptlanguage::Exception{"type missmatch in function '" + function->getName() + "' for argument '" + to_string(i) + "' unable to convert '" + scriptlanguage::typeToName(result->getResultType()) + "' to '" + scriptlanguage::typeToName(function->getArgumentType(i)) + "'"};
+         throw harriet::Exception{"type missmatch in function '" + function->getName() + "' for argument '" + to_string(i) + "' unable to convert '" + harriet::typeToName(result->getResultType()) + "' to '" + harriet::typeToName(function->getArgumentType(i)) + "'"};
       evaluetedArguments.push_back(::move(result));
    }
 
@@ -696,5 +696,5 @@ void FunctionOperator::print(ostream& stream) const
    stream << " " << functionName << " id:" << functionIdentifier << endl;
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

@@ -17,7 +17,7 @@
 //---------------------------------------------------------------------------
 using namespace std;
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 struct OpeningPharentesis : public Expression {
    virtual void print(ostream& stream) const {stream << " ( ";}
@@ -41,7 +41,7 @@ unique_ptr<Expression> ExpressionParser::parse(const string& inputString, Enviro
    istringstream input(inputString);
    stack<unique_ptr<Expression>> outputStack;
    stack<unique_ptr<Expression>> operatorStack;
-   scriptlanguage::skipWhiteSpace(input);
+   harriet::skipWhiteSpace(input);
    ExpressionType lastExpressionType = ExpressionType::TOpeningPharentesis; // needed for not context free operators
 
    // parse input and build PRN on the fly
@@ -51,9 +51,9 @@ unique_ptr<Expression> ExpressionParser::parse(const string& inputString, Enviro
       if(token==nullptr)
          break;
       if(token->getExpressionType()==lastExpressionType && lastExpressionType==ExpressionType::TValue)
-         throw scriptlanguage::Exception("missing operator");
+         throw harriet::Exception("missing operator");
       lastExpressionType = token->getExpressionType();
-      scriptlanguage::skipWhiteSpace(input);
+      harriet::skipWhiteSpace(input);
 
       // shunting yard algorithm -- proces tokens
       switch(token->getExpressionType()) {
@@ -80,7 +80,7 @@ unique_ptr<Expression> ExpressionParser::parse(const string& inputString, Enviro
             while(true) {
                // get top operator
                if(operatorStack.empty())
-                  throw scriptlanguage::Exception{"parenthesis missmatch: missing '('"};
+                  throw harriet::Exception{"parenthesis missmatch: missing '('"};
                auto stackToken = ::move(operatorStack.top());
                operatorStack.pop();
                if(stackToken->getExpressionType() == ExpressionType::TOpeningPharentesis)
@@ -96,7 +96,7 @@ unique_ptr<Expression> ExpressionParser::parse(const string& inputString, Enviro
       auto stackToken = ::move(operatorStack.top());
       operatorStack.pop();
       if(stackToken->getExpressionType() == ExpressionType::TOpeningPharentesis)
-         throw scriptlanguage::Exception{"parenthesis missmatch: missing ')'"};
+         throw harriet::Exception{"parenthesis missmatch: missing ')'"};
       pushToOutput(outputStack, ::move(stackToken));
    }
 
@@ -107,7 +107,7 @@ unique_ptr<Expression> ExpressionParser::parse(const string& inputString, Enviro
 unique_ptr<Expression> ExpressionParser::parseSingleExpression(istream& input, ExpressionType lastExpression, Environment& environment)
 {
    // read
-   scriptlanguage::skipWhiteSpace(input);
+   harriet::skipWhiteSpace(input);
    char a = input.get();
    if(!input.good())
       return nullptr;
@@ -134,7 +134,7 @@ unique_ptr<Expression> ExpressionParser::parseSingleExpression(istream& input, E
       string result;
       while(b!='"' && a!='\\') {
          if(!input.good())
-            throw scriptlanguage::Exception{"unterminated string expression"};
+            throw harriet::Exception{"unterminated string expression"};
          result.push_back(b);
          a = b;
          b = input.get();
@@ -165,18 +165,18 @@ unique_ptr<Expression> ExpressionParser::parseSingleExpression(istream& input, E
       } else {
          return make_unique<IntegerValue>(intNum);
       }
-      throw scriptlanguage::Exception{"unable to parse expression as number"};
+      throw harriet::Exception{"unable to parse expression as number"};
    }
 
    // read the name
-   string word = scriptlanguage::parseIdentifier(input);
+   string word = harriet::parseIdentifier(input);
    if(isalpha(a)) {
       // try bool
-      if(word == scriptlanguage::kTrue) return make_unique<BoolValue>(true);
-      if(word == scriptlanguage::kFalse) return make_unique<BoolValue>(false);
+      if(word == harriet::kTrue) return make_unique<BoolValue>(true);
+      if(word == harriet::kFalse) return make_unique<BoolValue>(false);
 
       // try cast
-      if(word == scriptlanguage::kCastName)
+      if(word == harriet::kCastName)
          return parseCast(input);
 
       // try function
@@ -188,10 +188,10 @@ unique_ptr<Expression> ExpressionParser::parseSingleExpression(istream& input, E
          return make_unique<Variable>(word);
 
       // error
-      throw scriptlanguage::Exception{"found unkown identifier: '" + word + "'"};
+      throw harriet::Exception{"found unkown identifier: '" + word + "'"};
    }
 
-   throw scriptlanguage::Exception{"unable to parse expression, invaild sign '" + string(1, a) + "'"};
+   throw harriet::Exception{"unable to parse expression, invaild sign '" + string(1, a) + "'"};
 }
 //---------------------------------------------------------------------------
 void ExpressionParser::pushToOutput(stack<unique_ptr<Expression>>& workStack, unique_ptr<Expression> element) // AAA split
@@ -201,7 +201,7 @@ void ExpressionParser::pushToOutput(stack<unique_ptr<Expression>>& workStack, un
    // unary operator
    if(element->getExpressionType() == ExpressionType::TUnaryOperator) {
       if(workStack.size()<1)
-         throw scriptlanguage::Exception{"to few arguments for unaray operator " + reinterpret_cast<UnaryOperator*>(element.get())->getSign()};
+         throw harriet::Exception{"to few arguments for unaray operator " + reinterpret_cast<UnaryOperator*>(element.get())->getSign()};
       auto operand = ::move(workStack.top());
       workStack.pop();
       reinterpret_cast<UnaryOperator*>(element.get())->addChild(::move(operand));
@@ -212,7 +212,7 @@ void ExpressionParser::pushToOutput(stack<unique_ptr<Expression>>& workStack, un
    // binary operator
    if(element->getExpressionType() == ExpressionType::TBinaryOperator) {
       if(workStack.size()<2)
-         throw scriptlanguage::Exception{"to few arguments for binary operator " + reinterpret_cast<BinaryOperator*>(element.get())->getSign()};
+         throw harriet::Exception{"to few arguments for binary operator " + reinterpret_cast<BinaryOperator*>(element.get())->getSign()};
       auto rhs = ::move(workStack.top());
       workStack.pop();
       auto lhs = ::move(workStack.top());
@@ -228,20 +228,20 @@ unique_ptr<CastOperator> ExpressionParser::parseCast(istream& input)
    // extract '<', read type and extract '>'
    char a = input.get();
    if(a!='<')
-      throw scriptlanguage::Exception{string("invalid cast syntax, expected '<' got '") + a + "'. usage: cast<type> value"};
-   scriptlanguage::VariableType type = scriptlanguage::nameToType(scriptlanguage::readOnlyAlpha(input));
+      throw harriet::Exception{string("invalid cast syntax, expected '<' got '") + a + "'. usage: cast<type> value"};
+   harriet::VariableType type = harriet::nameToType(harriet::readOnlyAlpha(input));
    a = input.get();
    if(a!='>')
-      throw scriptlanguage::Exception{string("invalid cast syntax, expected '>' got '") + a + "'. usage: cast<type> value"};
+      throw harriet::Exception{string("invalid cast syntax, expected '>' got '") + a + "'. usage: cast<type> value"};
 
    // create cast operator
    switch(type) {
-      case scriptlanguage::VariableType::TInteger: return make_unique<IntegerCast>();
-      case scriptlanguage::VariableType::TFloat:   return make_unique<FloatCast>();
-      case scriptlanguage::VariableType::TBool:    return make_unique<BoolCast>();
-      case scriptlanguage::VariableType::TString:  return make_unique<StringCast>();
-      case scriptlanguage::VariableType::TVector:  return make_unique<VectorCast>();
-      default:                                     throw scriptlanguage::Exception{string("i am tiered right now but something seems wrong")};
+      case harriet::VariableType::TInteger: return make_unique<IntegerCast>();
+      case harriet::VariableType::TFloat:   return make_unique<FloatCast>();
+      case harriet::VariableType::TBool:    return make_unique<BoolCast>();
+      case harriet::VariableType::TString:  return make_unique<StringCast>();
+      case harriet::VariableType::TVector:  return make_unique<VectorCast>();
+      default:                                     throw harriet::Exception{string("i am tiered right now but something seems wrong")};
    }
 }
 //---------------------------------------------------------------------------
@@ -261,7 +261,7 @@ unique_ptr<FunctionOperator> ExpressionParser::parseFunctionHeader(const string&
    // convert argument strings to expressions
    for(auto& iter : splittedArguments)
       if(iter.size()==0)
-         throw scriptlanguage::Exception{"in function '" + functionName + "': found empty argument"}; else
+         throw harriet::Exception{"in function '" + functionName + "': found empty argument"}; else
          arguments.push_back(parse(iter, environment));
 
    // evaluate arguments to access the type
@@ -278,7 +278,7 @@ unique_ptr<FunctionOperator> ExpressionParser::parseFunctionHeader(const string&
          if(function->getArgumentCount() == evaluatedArguments.size()) {
             if(function->getArgumentType(i) == evaluatedArguments[i]->getResultType())
                simpleMatches.push_back(function);
-            else if(scriptlanguage::isImplicitCastPossible(function->getArgumentType(i), evaluatedArguments[i]->getResultType()))
+            else if(harriet::isImplicitCastPossible(function->getArgumentType(i), evaluatedArguments[i]->getResultType()))
                castMatches.push_back(function);
          }
 
@@ -296,7 +296,7 @@ unique_ptr<FunctionOperator> ExpressionParser::parseFunctionHeader(const string&
       // created needed casts
       for(uint32_t i=0; i<evaluatedArguments.size(); i++)
          if(possibleFunctions[0]->getArgumentType(i) != evaluatedArguments[i]->getResultType())
-            arguments[i] = scriptlanguage::createCast(::move(arguments[i]), possibleFunctions[0]->getArgumentType(i));
+            arguments[i] = harriet::createCast(::move(arguments[i]), possibleFunctions[0]->getArgumentType(i));
 
       // create function
       return make_unique<FunctionOperator>(possibleFunctions[0]->getName(), possibleFunctions[0]->getId(), arguments);
@@ -305,34 +305,34 @@ unique_ptr<FunctionOperator> ExpressionParser::parseFunctionHeader(const string&
    // no unique possible funciton => epic error msg
    string error = (possibleFunctions.size()==0?"no matching function for call to ":"ambiguous function call to ") + functionName + "(";
    for(uint32_t i=0; i<evaluatedArguments.size(); i++)
-      error += scriptlanguage::typeToName(evaluatedArguments[i]->getResultType()) + (i+1==evaluatedArguments.size()?")":",");
+      error += harriet::typeToName(evaluatedArguments[i]->getResultType()) + (i+1==evaluatedArguments.size()?")":",");
    error += "\ncandidates are: \n";
    if(possibleFunctions.size() == 0)
       possibleFunctions = environment.getFunction(functionName);
    for(auto iter : possibleFunctions)
       error += "   " + iter->getFunctionHeader() + "\n";
-   throw scriptlanguage::Exception{error};
+   throw harriet::Exception{error};
 }
 //---------------------------------------------------------------------------
 vector<string> ExpressionParser::splitFunctionArguments(istream& is, const string& functionName)
 {
    // begin
-   scriptlanguage::skipWhiteSpace(is);
+   harriet::skipWhiteSpace(is);
    if(is.get() != '(')
-      throw scriptlanguage::Exception{"expected opening parentesis '(' after function identifier: '" + functionName + "'"};
+      throw harriet::Exception{"expected opening parentesis '(' after function identifier: '" + functionName + "'"};
 
    // init
    int32_t parenthesisCount = 1;
    vector<string> result;
    string buffer;
-   scriptlanguage::skipWhiteSpace(is);
+   harriet::skipWhiteSpace(is);
 
    // read
    do {
       char a = is.get();
       if(a=='(') parenthesisCount++;
       if(a==')') parenthesisCount--;
-      if(parenthesisCount < 0) throw scriptlanguage::Exception{"expected '(' before ')'"};
+      if(parenthesisCount < 0) throw harriet::Exception{"expected '(' before ')'"};
 
       // check if finished
       if(parenthesisCount==0) {
@@ -344,15 +344,15 @@ vector<string> ExpressionParser::splitFunctionArguments(istream& is, const strin
       if(a==',' && parenthesisCount==1) {
          result.push_back(buffer);
          buffer = "";
-         scriptlanguage::skipWhiteSpace(is);
+         harriet::skipWhiteSpace(is);
       } else {
          buffer.push_back(a);
       }
    } while(is.good());
 
    // should not be reached
-   throw scriptlanguage::Exception{"expected closing parentesis ')' after function identifier: '" + functionName + "'"};
+   throw harriet::Exception{"expected closing parentesis ')' after function identifier: '" + functionName + "'"};
 }
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------

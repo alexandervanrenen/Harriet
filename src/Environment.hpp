@@ -9,7 +9,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 class Value;
 class Function;
@@ -39,6 +39,6 @@ private:
    std::vector<std::unique_ptr<Function>> functions; // functions
 };
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------
 #endif

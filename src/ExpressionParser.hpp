@@ -13,7 +13,7 @@
 // Copyright (c) 2012, 2013 Alexander van Renen (alexandervanrenen@gmail.com)
 // See the file LICENSE.txt for copying permission.
 //---------------------------------------------------------------------------
-namespace scriptlanguage {
+namespace harriet {
 //---------------------------------------------------------------------------
 class Environment;
 //---------------------------------------------------------------------------
@@ -37,6 +37,6 @@ protected:
    static std::vector<std::string> splitFunctionArguments(std::istream& is, const std::string& functionName);
 };
 //---------------------------------------------------------------------------
-} // end of namespace scriptlanguage
+} // end of namespace harriet
 //---------------------------------------------------------------------------
 #endif
