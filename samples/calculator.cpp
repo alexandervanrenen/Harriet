@@ -1,6 +1,4 @@
-#include "ScriptLanguage.hpp"
-#include "Environment.hpp"
-#include "ExpressionParser.hpp"
+#include "Harriet.hpp"
 #include <iostream>
 //---------------------------------------------------------------------------
 // Harriet Script Language
@@ -13,14 +11,12 @@ int main(int argc, char** argv)
 {
    // check arguments
    if(argc!=2) {
-      cout << "usage: ./tester \"2*3*7\"" << endl;
+      cout << "usage: ./calculator \"2*3*7\"" << endl;
       return 0;
    }
 
-   // parse input and evalute the expression
-   scriptlanguage::Environment env;
-   auto expression = scriptlanguage::ExpressionParser::parse(argv[1], env);
-   auto result = expression->evaluate(env);
+   // parse input and evaluate the expression
+   auto result = scriptlanguage::evaluate(argv[1]);
 
    // print result and quit
    cout << "result: ";

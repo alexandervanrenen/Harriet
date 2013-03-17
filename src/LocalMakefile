@@ -3,4 +3,5 @@ obj_files_src :=    src/Environment.o       \
                     src/Expression.o        \
                     src/ExpressionParser.o  \
                     src/Function.o          \
-                    src/ScriptLanguage.o
+                    src/ScriptLanguage.o    \
+                    src/Harriet.o

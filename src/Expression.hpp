@@ -81,7 +81,7 @@ public:
    virtual std::unique_ptr<Value> computeInv(const Environment& /*env*/) const {doError("-", *this); throw;}
    virtual std::unique_ptr<Value> computeNot(const Environment& /*env*/) const {doError("!", *this); throw;}
 
-   virtual std::unique_ptr<Value> computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const {throw scriptlanguage::Exception{"unable to cast '" + scriptlanguage::typeToName(getResultType()) + "' to '" +  scriptlanguage::typeToName(resultType) + "'"};}
+   virtual std::unique_ptr<Value> computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const {throw scriptlanguage::Exception{"unable to cast '" + scriptlanguage::typeToName(getResultType()) + "' to '" +  scriptlanguage::typeToName(resultType) + "'"};} // TODO: remove environment parameter
 
 protected:
    virtual uint8_t priority() const {return 0;}
@@ -211,15 +211,6 @@ struct VectorValue : public Value, GenericAllocator<VectorValue> {
    virtual std::unique_ptr<Value> computeInv(const Environment& env) const;
 
    virtual std::unique_ptr<Value> computeCast(const Environment& env, scriptlanguage::VariableType resultType) const;
-};
-//---------------------------------------------------------------------------
-struct VoidValue : public Value, GenericAllocator<VoidValue> {
-   using GenericAllocator<VoidValue>::operator new;
-   using GenericAllocator<VoidValue>::operator delete;
-   virtual ~VoidValue(){};
-   virtual void print(std::ostream& stream) const;
-   virtual std::unique_ptr<Value> evaluate(Environment& environment) const;
-   virtual scriptlanguage::VariableType getResultType() const {return scriptlanguage::VariableType::TVoid;}
 };
 //---------------------------------------------------------------------------
 class UnaryOperator : public Expression {

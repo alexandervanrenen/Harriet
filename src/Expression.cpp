@@ -38,7 +38,7 @@ unique_ptr<Value> Variable::evaluate(Environment& environment) const
 //---------------------------------------------------------------------------
 void IntegerValue::print(ostream& stream) const
 {
-   stream << result << "i ";
+   stream << result << " ";
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> IntegerValue::evaluate(Environment& /*environment*/) const
@@ -186,13 +186,13 @@ unique_ptr<Value> IntegerValue::computeCast(const Environment& /*env*/, scriptla
       case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
       case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
       case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid cast targete: '" + scriptlanguage::typeToName(resultType) + "'"};
+      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
 void FloatValue::print(ostream& stream) const
 {
-   stream << result << "f ";
+   stream << result << " ";
 }
 //---------------------------------------------------------------------------
 unique_ptr<Value> FloatValue::evaluate(Environment& /*environment*/) const
@@ -324,7 +324,7 @@ unique_ptr<Value> FloatValue::computeCast(const Environment& /*env*/, scriptlang
       case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result!=0);
       case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(to_string(this->result));
       case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default: throw scriptlanguage::Exception{"invalid cast targete: '" + scriptlanguage::typeToName(resultType) + "'"};
+      default: throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -383,7 +383,7 @@ unique_ptr<Value> BoolValue::computeCast(const Environment& /*env*/, scriptlangu
       case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result);
       case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result?scriptlanguage::kTrue:scriptlanguage::kFalse);
       case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(Vector3<float>(this->result, this->result, this->result));
-      default:                                     throw scriptlanguage::Exception{"invalid cast targete: '" + scriptlanguage::typeToName(resultType) + "'"};
+      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -461,7 +461,7 @@ unique_ptr<Value> StringValue::computeCast(const Environment& /*env*/, scriptlan
       case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result==scriptlanguage::kTrue || this->result=="0");
       case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result);
       case scriptlanguage::VariableType::TVector:  {auto v=make_unique<VectorValue>(Vector3<float>(0)); istringstream is(this->result); is >> v->result; return ::move(v);}
-      default:                                     throw scriptlanguage::Exception{"invalid cast targete: '" + scriptlanguage::typeToName(resultType) + "'"};
+      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
    }
 }
 //---------------------------------------------------------------------------
@@ -542,18 +542,8 @@ unique_ptr<Value> VectorValue::computeCast(const Environment& /*env*/, scriptlan
       case scriptlanguage::VariableType::TBool:    return make_unique<BoolValue>(this->result.x!=0);
       case scriptlanguage::VariableType::TString:  return make_unique<StringValue>(this->result.toString());
       case scriptlanguage::VariableType::TVector:  return make_unique<VectorValue>(this->result);
-      default:                                     throw scriptlanguage::Exception{"invalid cast targete: '" + scriptlanguage::typeToName(resultType) + "'"};
+      default:                                     throw scriptlanguage::Exception{"invalid cast target: '" + scriptlanguage::typeToName(resultType) + "'"};
    }
-}
-//---------------------------------------------------------------------------
-void VoidValue::print(ostream& stream) const
-{
-   stream << " void ";
-}
-//---------------------------------------------------------------------------
-unique_ptr<Value> VoidValue::evaluate(Environment& /*environment*/) const
-{
-   throw;
 }
 //---------------------------------------------------------------------------
 void UnaryOperator::print(ostream& stream) const

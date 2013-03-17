@@ -37,8 +37,6 @@ VariableType nameToType(const string& name) throw(Exception)
       return VariableType::TString;
    if(name == kVariableVector)
       return VariableType::TVector;
-   if(name == kVariableVoid)
-      return VariableType::TVoid;
    throw Exception{"invalid type name: " + name};
 }
 //---------------------------------------------------------------------------
@@ -55,8 +53,6 @@ const string typeToName(VariableType type) throw()
          return kVariableString;
       case VariableType::TVector:
          return kVariableVector;
-      case VariableType::TVoid:
-         return kVariableVoid;
    }
    throw Exception{"unreachable"};
 }
@@ -74,8 +70,6 @@ unique_ptr<Value> createDefaultValue(VariableType type) throw()
          return make_unique<StringValue>("");
       case VariableType::TVector:
          return make_unique<VectorValue>(Vector3<float>(0,0,0));
-      case VariableType::TVoid:
-         return make_unique<VoidValue>();
    }
    throw Exception{"unreachable"};
 }

@@ -17,21 +17,7 @@ class Value;
 class Expression;
 //---------------------------------------------------------------------------
 /// other key words
-const std::string kTriggerName = "trigger";
-const std::string kEventName = "event";
-const std::string kStatusName = "status";
-const std::string kActionName = "action";
-const std::string kActiveStatus = "active";
-const std::string kInActiveStatus = "inactive";
 const std::string kCastName = "cast";
-
-/// action types
-const std::string kActionLocalVariable = "local";
-const std::string kActionWhile = "while";
-const std::string kActionIf = "if";
-const std::string kActionElse = "else";
-const std::string kActionSleep = "sleep";
-const std::string kActionReturn = "return";
 
 /// variable types
 const std::string kVariableInteger = "int";
@@ -39,18 +25,13 @@ const std::string kVariableFloat = "float";
 const std::string kVariableBool = "bool";
 const std::string kVariableString = "string";
 const std::string kVariableVector = "vector";
-const std::string kVariableVoid = "void";
-
-/// triggers
-const std::string kTriggerGameStart = "gamestart";
-const std::string kTriggerDeadShipModule = "deadshipmodule";
 
 /// boolean values
 const std::string kTrue = "true";
 const std::string kFalse = "false";
 
 /// variable types
-enum struct VariableType : uint8_t {TInteger, TFloat, TBool, TString, TVector, TVoid};
+enum struct VariableType : uint8_t {TInteger, TFloat, TBool, TString, TVector};
 
 /// exceptions
 struct Exception : public std::exception {
@@ -61,24 +42,11 @@ struct Exception : public std::exception {
 };
 
 /// all keywords
-const std::array<std::string, 18>keywords = {{ "return",
-                                               "break",
-                                               kActionWhile,
-                                               kEventName,
-                                               kStatusName,
-                                               "command",
-                                               "define",
-                                               kActionName,
-                                               kTriggerName,
-                                               kActiveStatus,
-                                               kInActiveStatus,
-                                               kTriggerGameStart,
-                                               kTriggerDeadShipModule,
-                                               kActionLocalVariable,
-                                               kVariableInteger,
+const std::array<std::string, 5>keywords = {{ kVariableInteger,
                                                kVariableFloat,
                                                kVariableBool,
                                                kVariableString,
+                                               kVariableVector
                                        }};
 
 /// helper functions
@@ -96,6 +64,7 @@ const std::string readParenthesisExpression(char openginType, char closingType, 
 
 bool isImplicitCastPossible(VariableType from, VariableType to) throw();
 std::unique_ptr<Expression> createCast(std::unique_ptr<Expression> expression, scriptlanguage::VariableType resultType);
-}
+//---------------------------------------------------------------------------
+} // end of namespace scriptlanguage
 //---------------------------------------------------------------------------
 #endif
