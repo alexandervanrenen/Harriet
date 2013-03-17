@@ -11,27 +11,30 @@ srcDir:= src/
 -include config.local
 
 CXX ?= g++
-cf := -Werror -Wall -Wextra -Wuninitialized --std=c++0x -g0 -O3 -fPIC -I./src -I./libs/gtest/include
+cf := -Werror -Wall -Wextra -Wuninitialized --std=c++0x -g0 -O3 -I./src -I./libs/gtest/include
 lf := -g0 -O3 --std=c++0x -I./src -I./libs/gtest/include
 
 build_dir = @mkdir -p $(dir $@)
 
-src_files :=	Environment.o		\
-				Expression.o		\
-				ExpressionParser.o	\
-				Function.o			\
-				ScriptLanguage.o
-obj_files := $(addprefix $(objDir),$(src_files))
+-include src/LocalMakefile
+obj_files := $(addprefix $(objDir),$(obj_files_src))
 
-calculator: $(obj_files) samples/calculator.cpp
-	$(CXX) -o $@ samples/calculator.cpp $(obj_files) $(lf)
+calculator: $(obj_files) obj/samples/calculator.o
+	$(CXX) -o $@ obj/samples/calculator.o $(obj_files) $(lf)
 
-tester: libs/gtest $(obj_files) tests/tester.cpp
-	$(CXX) -o $@ tests/tester.cpp $(lf) $(obj_files) libs/gtest/libgtest.a -pthread
+tester: libs/gtest $(obj_files) obj/tests/tester.o
+	$(CXX) -o $@ obj/tests/tester.o $(lf) $(obj_files) libs/gtest/libgtest.a -pthread
 
-$(objDir)%o: $(srcDir)%cpp $(srcDir)%hpp
+$(objDir)%.o: %.cpp
 	$(build_dir)
-	$(CXX) -c -o $@ $< $(cf)
+	$(CXX) -MD -c -o $@ $< $(cf)
+	@cp $(objDir)$*.d $(objDir)$*.P; \
+		sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+			-e '/^$$/ d' -e 's/$$/ :/' < $(objDir)$*.d >> $(objDir)$*.P; \
+		rm -f $(objDir)$*.d
+
+-include $(objDir)*.P
+-include $(objDir)*/*.P
 
 libs/gtest:
 	$(build_dir)
