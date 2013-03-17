@@ -2,7 +2,7 @@
 #define SCRIPTLANGUAGE_VECTOR3_HPP
 //---------------------------------------------------------------------------
 #include <cassert>
-#include <iostream>
+#include <ios>
 #include <math.h>
 #include <sstream>
 #include <stdint.h>

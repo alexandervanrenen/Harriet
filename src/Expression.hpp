@@ -52,6 +52,7 @@ public:
    virtual void print(std::ostream& stream) const;
    virtual std::unique_ptr<Value> evaluate(Environment& environment) const;
    const std::string& getIdentifier() const {return identifier;}
+
 protected:
    virtual uint8_t priority() const {throw;}
    virtual ExpressionType getExpressionType() const {return ExpressionType::TVariable;}
@@ -82,6 +83,8 @@ public:
    virtual std::unique_ptr<Value> computeNot(const Environment& /*env*/) const {doError("!", *this); throw;}
 
    virtual std::unique_ptr<Value> computeCast(const Environment& /*env*/, scriptlanguage::VariableType resultType) const {throw scriptlanguage::Exception{"unable to cast '" + scriptlanguage::typeToName(getResultType()) + "' to '" +  scriptlanguage::typeToName(resultType) + "'"};} // TODO: remove environment parameter
+
+   friend std::ostream& operator<< (std::ostream& os, const Value& value) {value.print(os); return os;}
 
 protected:
    virtual uint8_t priority() const {return 0;}

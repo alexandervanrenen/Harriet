@@ -17,11 +17,10 @@ int main(int argc, char** argv)
 
    // parse input and evaluate the expression
    auto result = scriptlanguage::evaluate(argv[1]);
+   scriptlanguage::Value& val = *result;
 
    // print result and quit
-   cout << "result: ";
-   result->print(cout);
-   cout << endl;
+   cout << "result: " << val << endl;
    return 0;
 }
 //---------------------------------------------------------------------------
